@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import ibf2022.paf.assessment.server.models.Task;
 import ibf2022.paf.assessment.server.models.User;
@@ -43,7 +45,6 @@ public class TasksController {
         for (String desc : form.keySet()) {
             if (desc.startsWith("description-")) { 
                 descriptions.addAll(form.get(desc));
-                // descriptions = form.get(desc);                
             }
         }
 
@@ -52,14 +53,12 @@ public class TasksController {
         for (String pty : form.keySet()) {
             if (pty.startsWith("priority-")) { 
                 priority.addAll(form.get(pty));
-                // priority = form.get(pty); 
             }
         }
 
         for (String dd : form.keySet()) {
             if (dd.startsWith("dueDate-")) { 
                 dueDate.addAll(form.get(dd));
-                // dueDate = form.get(dd);
             }
         }
                 
@@ -86,38 +85,24 @@ public class TasksController {
         model.addAttribute("taskCount", tasksInserted);
         model.addAttribute("username", username);
 
-
         if (tasksInserted > 0) {
             return "result";
         } else {
             return "error";
         }
+
+        // ModelAndView mavErr = new ModelAndView();
+        // mavErr.setViewName("error");
+        // mavErr.setStatus(HttpStatusCode.valueOf(500));
+
+        // ModelAndView mavSucc = new ModelAndView();
+        // mavSucc.setViewName("error");
+        // mavSucc.setStatus(HttpStatusCode.valueOf(200));
+
+        // if (tasksInserted > 0) {
+        //     return mavSucc;
+        // } else {
+        //     return mavErr;
+        // }
     }
 }
-
-
-        // int taskId = 0;
-
-        // for (String input : form.keySet()) {
-
-        //     if (input.startsWith("description-")) { 
-        //         descriptions = form.get(input);                
-        //     }
-        //     if (input.startsWith("priority-")) { 
-        //         priority = form.get(input); 
-        //     }
-        //     if (input.startsWith("dueDate-")) { 
-        //         dueDate = form.get(input);
-        //     }
-
-        //     taskId++;        
-
-        //     Task task = new Task();
-        //     task.setUsername(username);
-        //     task.setTaskId(taskId);
-        //     task.setDescription(descriptions.get(taskId));
-        //     task.setPriority(Integer.parseInt(priority.get(taskId)));
-        //     task.setDueDate(dueDate.get(taskId));
-        //     taskList.add(task);
-            
-        // }
